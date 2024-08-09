@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext'; // Import AuthContext
 
-const ws = new WebSocket("ws://https://backend-aid-b83f0dba9cf5.herokuapp.com/cable");
+const ws = new WebSocket("wss://https://backend-aid-b83f0dba9cf5.herokuapp.com/cable");
 
 function MessagesPage() {
   const { conversationId } = useParams();
