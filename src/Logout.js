@@ -7,7 +7,7 @@ const Logout = ({ setAuth }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch("https://frontend-aid-25b7d93d6106.herokuapp.com/logout", {
+      const response = await fetch("https://backend-aid-b83f0dba9cf5.herokuapp.com/logout", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

@@ -14,18 +14,18 @@ function ConversationsList() {
   const fetchConversations = async () => {
     if (user) {
       try {
-        const response = await fetch(`https://frontend-aid-25b7d93d6106.herokuapp.com/conversations?user_id=${user.user_id}`);
+        const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/conversations?user_id=${user.user_id}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch conversations: ${response.statusText}`);
         }
         const data = await response.json();
         console.log('Fetched conversations data:', data); // Log data to inspect
-  
+
         // Process the data
         const republishedSet = new Set(data.filter(conversation => !conversation.visible).map(conversation => conversation.id));
         setRepublishedConversations(republishedSet);
         setConversations(data);
-  
+
         // Count assigned users for each help request
         const counts = {};
         data.forEach(conversation => {
@@ -53,7 +53,7 @@ function ConversationsList() {
 
   const markHelpRequestComplete = async (helpRequestId) => {
     try {
-      const response = await fetch(`https://frontend-aid-25b7d93d6106.herokuapp.com/help_requests/${helpRequestId}/complete`, {
+      const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/help_requests/${helpRequestId}/complete`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ function ConversationsList() {
 
   const republishHelpRequest = async (helpRequestId, conversationId) => {
     try {
-      const response = await fetch(`https://frontend-aid-25b7d93d6106.herokuapp.com/help_requests/${helpRequestId}/republish`, {
+      const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/help_requests/${helpRequestId}/republish`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

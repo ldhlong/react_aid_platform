@@ -31,7 +31,7 @@ const RegistrationForm = () => {
     const form = new FormData();
     Object.keys(formData).forEach(key => form.append(`user[${key}]`, formData[key]));
 
-    fetch('https://frontend-aid-25b7d93d6106.herokuapp.com/signup', {
+    fetch('https://backend-aid-b83f0dba9cf5.herokuapp.com/signup', {
       method: 'POST',
       body: form,
       headers: {

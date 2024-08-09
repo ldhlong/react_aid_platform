@@ -34,7 +34,7 @@ function MapComponent() {
   const fetchMarkers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch('https://frontend-aid-25b7d93d6106.herokuapp.com/help_requests', {
+      const response = await fetch('https://backend-aid-b83f0dba9cf5.herokuapp.com/help_requests', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -61,7 +61,7 @@ function MapComponent() {
         }
       };
 
-      const response = await fetch(`https://frontend-aid-25b7d93d6106.herokuapp.com/help_requests/${requestCount}`, {
+      const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/help_requests/${requestCount}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

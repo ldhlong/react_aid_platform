@@ -10,7 +10,7 @@ const HomePage = () => {
       try {
         console.log('Attempting to fetch completed requests count...');
 
-        const response = await fetch('https://frontend-aid-25b7d93d6106.herokuapp.com/api/completed_requests_count', {
+        const response = await fetch('https://backend-aid-b83f0dba9cf5.herokuapp.com/api/completed_requests_count', {
           method: 'GET',
         });
 
