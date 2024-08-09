@@ -24,7 +24,7 @@ function MessagesPage() {
 
   const fetchMessages = useCallback(async () => {
     try {
-      const url = `http://localhost:4000/messages/${conversationId}`;
+      const url = `https://frontend-aid-25b7d93d6106.herokuapp.com/messages/${conversationId}`;
       console.log("Fetching messages from:", url); // Log the URL being fetched
 
       const response = await fetch(url);
@@ -100,7 +100,7 @@ function MessagesPage() {
 
     // Adjust the URL and message structure based on your backend requirements
     try {
-      const response = await fetch("http://localhost:4000/messages", {
+      const response = await fetch("https://frontend-aid-25b7d93d6106.herokuapp.com/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,11 +132,10 @@ function MessagesPage() {
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`message-content p-3 ${
-              message.sender_id === user_id
+            className={`message-content p-3 ${message.sender_id === user_id
                 ? 'bg-primary text-white rounded-right'
                 : 'bg-secondary text-black rounded-left'
-            }`}
+              }`}
           >
             <p className="mb-0">{message.body}</p>
           </div>

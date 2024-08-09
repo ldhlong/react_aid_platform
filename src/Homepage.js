@@ -9,8 +9,8 @@ const HomePage = () => {
     const fetchCompletedRequestsCount = async () => {
       try {
         console.log('Attempting to fetch completed requests count...');
-        
-        const response = await fetch('http://localhost:4000/api/completed_requests_count', {
+
+        const response = await fetch('https://frontend-aid-25b7d93d6106.herokuapp.com/api/completed_requests_count', {
           method: 'GET',
         });
 

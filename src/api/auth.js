@@ -1,6 +1,6 @@
 // src/api/auth.js
 
-const API_URL = 'http://localhost:4000'; // Update with your backend URL
+const API_URL = 'https://frontend-aid-25b7d93d6106.herokuapp.com'; // Update with your backend URL
 
 export const logout = async (token) => {
   try {

@@ -7,7 +7,7 @@ const Logout = ({ setAuth }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch("http://localhost:4000/logout", {
+      const response = await fetch("https://frontend-aid-25b7d93d6106.herokuapp.com/logout", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -16,7 +16,7 @@ const Logout = ({ setAuth }) => {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
-      
+
       // Clear local storage and update auth context
       localStorage.removeItem("token");
       localStorage.removeItem("user");

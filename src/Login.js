@@ -10,7 +10,7 @@ const Login = ({ setShow }) => {
   const [message, setMessage] = useState(""); // State for success message
 
   const login = async (userInfo) => {
-    const url = "http://localhost:4000/login";
+    const url = "https://frontend-aid-25b7d93d6106.herokuapp.com/login";
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -86,22 +86,22 @@ const Login = ({ setShow }) => {
           <form ref={formRef} onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="email">Email:</label>
-              <input 
-                type="email" 
-                className="form-control" 
-                id="email" 
-                name="email" 
-                placeholder="Email" 
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                name="email"
+                placeholder="Email"
               />
             </div>
             <div className="form-group">
               <label htmlFor="password">Password:</label>
-              <input 
-                type="password" 
-                className="form-control" 
-                id="password" 
-                name="password" 
-                placeholder="Password" 
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                name="password"
+                placeholder="Password"
               />
             </div>
             <div className="text-center mt-3">

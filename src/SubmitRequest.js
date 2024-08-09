@@ -23,7 +23,7 @@ const SubmitRequest = ({ token }) => {
     };
 
     try {
-      const response = await fetch('http://localhost:4000/submit_request', {
+      const response = await fetch('https://frontend-aid-25b7d93d6106.herokuapp.com/submit_request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
