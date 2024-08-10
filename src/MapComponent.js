@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useJsApiLoader, GoogleMap, Marker, InfoWindowF } from '@react-google-maps/api';
-import { Button, Container, Row, Col, ListGroup } from 'react-bootstrap';
+import { useJsApiLoader, GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 
 const oneTimeTaskIcon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'; // Blue dot for one-time tasks
 const materialNeedIcon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'; // Red dot for material needs
@@ -61,7 +60,7 @@ function MapComponent() {
         }
       };
 
-      const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/help_requests/${requestCount}`, {
+      const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/${requestCount}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -94,84 +93,73 @@ function MapComponent() {
     }
   };
 
+
+
   if (loadError) {
     return <div>Error loading maps</div>;
   }
 
+  const getColorStyle = (type) => {
+    return {
+      backgroundColor: type === 'one-time-task' ? 'blue' : 'red',
+      width: '10px',
+      height: '10px',
+      borderRadius: '50%',
+      display: 'inline-block',
+      marginRight: '10px'
+    };
+  };
+
   return isLoaded ? (
-    <Container>
-      <Row className="mb-3">
-        <Col>
-          <h2 className="text-center">Help Requests</h2>
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={12}
+    <div>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={12}
+      >
+        {markers.map(marker => (
+          <Marker
+            key={marker.request_count}
+            position={{
+              lat: parseFloat(marker.latitude),
+              lng: parseFloat(marker.longitude),
+            }}
+            icon={marker.request_type === 'one-time-task' ? oneTimeTaskIcon : materialNeedIcon}
+            onClick={() => setSelected(marker)}
+          />
+        ))}
+        {selected && (
+          <InfoWindow
+            position={{
+              lat: parseFloat(selected.latitude),
+              lng: parseFloat(selected.longitude),
+            }}
+            onCloseClick={() => setSelected(null)}
           >
-            {markers.map(marker => (
-              <Marker
-                key={marker.request_count}
-                position={{
-                  lat: parseFloat(marker.latitude),
-                  lng: parseFloat(marker.longitude),
-                }}
-                icon={marker.request_type === 'one-time-task' ? oneTimeTaskIcon : materialNeedIcon}
-                onClick={() => setSelected(marker)}
-              />
-            ))}
-            {selected && (
-              <InfoWindowF
-                position={{
-                  lat: parseFloat(selected.latitude),
-                  lng: parseFloat(selected.longitude),
-                }}
-                onCloseClick={() => setSelected(null)}
-              >
-                <div style={{ maxWidth: 200 }}>
-                  <h3>Title: {selected.title}</h3>
-                  <p>Description: {selected.description}</p>
-                  <p>Latitude: {selected.latitude}</p>
-                  <p>Longitude: {selected.longitude}</p>
-                  <p>Type: {selected.request_type}</p>
-                  <Button variant="primary" onClick={() => handleAssign(selected.request_count)}>Accept Task</Button>
-                </div>
-              </InfoWindowF>
-            )}
-          </GoogleMap>
-        </Col>
-      </Row>
-      <Row className="mb-3">
-        <Col>
-          <div className="p-3 border bg-light">
-            <h4 className="mb-3">Legend:</h4>
-            <div className="d-flex align-items-center mb-2">
-              <div className="me-2" style={{ backgroundColor: 'blue', width: '15px', height: '15px', borderRadius: '50%' }}></div>
-              <span>One-time Task</span>
+            <div style={{ maxWidth: 200 }}>
+              <h3>{selected.title}</h3>
+              <p>{selected.description}</p>
+              <p>Latitude: {selected.latitude}</p>
+              <p>Longitude: {selected.longitude}</p>
+              <p>Type: {selected.request_type}</p> {/* Display request type */}
+              <button onClick={() => handleAssign(selected.request_count)}>Assign to Me</button>
             </div>
-            <div className="d-flex align-items-center">
-              <div className="me-2" style={{ backgroundColor: 'red', width: '15px', height: '15px', borderRadius: '50%' }}></div>
-              <span>Material Need</span>
-            </div>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <div className="p-3 border">
-            <h4 className="mb-3">Available Help Requests:</h4>
-            <ListGroup>
-              {markers.map(marker => (
-                <ListGroup.Item key={marker.request_count} className="d-flex align-items-center">
-                  <div className="me-2" style={{ backgroundColor: marker.request_type === 'one-time-task' ? 'blue' : 'red', width: '15px', height: '15px', borderRadius: '50%' }}></div>
-                  <span className="me-2">Title: {marker.title}, Description: {marker.description}, Lat: {marker.latitude}, Lng: {marker.longitude}</span>
-                  <Button variant="primary" onClick={() => handleAssign(marker.request_count)}>Accept Task</Button>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+          </InfoWindow>
+        )}
+      </GoogleMap>
+      <div style={{ marginTop: '10px', padding: '10px', border: '1px solid #ccc' }}>
+        <h2>List of Markers:</h2>
+        <ul>
+          {markers.map(marker => (
+            <li key={marker.request_count} style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={getColorStyle(marker.request_type)}></div>
+              {marker.title} - Lat: {marker.latitude}, Lng: {marker.longitude}
+              <button style={{ marginLeft: '10px' }} onClick={() => handleAssign(marker.request_count)}>Assign to Me</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   ) : (
     <div>Loading...</div>
   );
