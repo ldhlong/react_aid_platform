@@ -14,7 +14,7 @@ function ConversationsList() {
   const fetchConversations = async () => {
     if (user) {
       try {
-        const response = await fetch(`http://localhost:4000/conversations?user_id=${user.user_id}`);
+        const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/conversations?user_id=${user.user_id}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch conversations: ${response.statusText}`);
         }
@@ -52,7 +52,7 @@ function ConversationsList() {
 
   const markHelpRequestComplete = async (helpRequestId) => {
     try {
-      const response = await fetch(`http://localhost:4000/help_requests/${helpRequestId}/complete`, {
+      const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/help_requests/${helpRequestId}/complete`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ function ConversationsList() {
 
   const republishHelpRequest = async (helpRequestId, conversationId) => {
     try {
-      const response = await fetch(`http://localhost:4000/help_requests/${helpRequestId}/republish`, {
+      const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/help_requests/${helpRequestId}/republish`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
