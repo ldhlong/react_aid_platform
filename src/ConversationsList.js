@@ -14,12 +14,11 @@ function ConversationsList() {
   const fetchConversations = async () => {
     if (user) {
       try {
-        const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/conversations?user_id=${user.user_id}`);
+        const response = await fetch(`http://localhost:4000/conversations?user_id=${user.user_id}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch conversations: ${response.statusText}`);
         }
         const data = await response.json();
-        console.log('Fetched conversations data:', data); // Log data to inspect
 
         // Process the data
         const republishedSet = new Set(data.filter(conversation => !conversation.visible).map(conversation => conversation.id));
@@ -53,7 +52,7 @@ function ConversationsList() {
 
   const markHelpRequestComplete = async (helpRequestId) => {
     try {
-      const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/help_requests/${helpRequestId}/complete`, {
+      const response = await fetch(`http://localhost:4000/help_requests/${helpRequestId}/complete`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -74,7 +73,7 @@ function ConversationsList() {
 
   const republishHelpRequest = async (helpRequestId, conversationId) => {
     try {
-      const response = await fetch(`https://backend-aid-b83f0dba9cf5.herokuapp.com/help_requests/${helpRequestId}/republish`, {
+      const response = await fetch(`http://localhost:4000/help_requests/${helpRequestId}/republish`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -106,14 +105,14 @@ function ConversationsList() {
   };
 
   return (
-    <div className="conversationsList">
-      <h2>Messages</h2>
+    <div className="container mt-4">
+      <h2>Conversations</h2>
       <div className="row">
         {Array.isArray(conversations) && conversations.length > 0 ? (
           conversations.map((conversation) => {
             const helpRequestId = conversation.help_request_id;
             const assignedCount = assignedUserCount[helpRequestId] || 0;
-            const canRepublish = assignedCount === 5;
+            const canRepublish = assignedCount >= 5;
             const isComplete = conversation.completion_status;
 
             return (
@@ -124,7 +123,7 @@ function ConversationsList() {
                   style={{
                     cursor: (!conversation.visible || republishedConversations.has(conversation.id)) ? 'not-allowed' : 'pointer',
                     opacity: (!conversation.visible || republishedConversations.has(conversation.id)) ? 0.5 : 1,
-                    backgroundColor: republishedConversations.has(conversation.id) ? 'grey' : 'white'
+                    backgroundColor: republishedConversations.has(conversation.id) ? '#e9ecef' : 'white'
                   }}
                 >
                   <Card.Body>
@@ -136,6 +135,9 @@ function ConversationsList() {
                     </div>
                     <Card.Text>
                       Description: {conversation.description || 'N/A'}
+                    </Card.Text>
+                    <Card.Text>
+                      Conversation with: {conversation.sender_id === user.user_id ? conversation.user_id : conversation.sender_id}
                     </Card.Text>
                     <Card.Text>
                       Last Message: {conversation.last_message || 'No messages'}
@@ -154,7 +156,7 @@ function ConversationsList() {
                               e.stopPropagation();
                               republishHelpRequest(helpRequestId, conversation.id);
                             }}
-                            disabled={!conversation.visible}
+                            disabled={republishedConversations.has(conversation.id)}
                             variant={republishedConversations.has(conversation.id) ? 'secondary' : 'primary'}
                             className="me-2"
                           >
