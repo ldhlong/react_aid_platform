@@ -87,7 +87,7 @@ function MapComponent() {
       fetchMarkers();
 
       // Navigate to the correct conversation ID
-      navigate(`/messages/${conversationId}`);
+      navigate(`https://backend-aid-b83f0dba9cf5.herokuapp.com/messages/${conversationId}`);
 
     } catch (error) {
       console.error('Error assigning marker:', error);
