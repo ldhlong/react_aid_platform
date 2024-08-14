@@ -86,7 +86,7 @@ function MapComponent() {
       // Fetch the updated list of markers
       fetchMarkers();
 
-      window.location.href = `https://backend-aid-b83f0dba9cf5.herokuapp.com/messages/${conversationId}`;
+      navigate(`/messages/${conversationId}`);
 
     } catch (error) {
       console.error('Error assigning marker:', error);
