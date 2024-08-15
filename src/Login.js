@@ -3,11 +3,11 @@ import { AuthContext } from "./context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Login = ({ setShow }) => {
+const Login = () => { // Removed setShow prop
   const formRef = useRef();
-  const { setAuth } = useContext(AuthContext); // Ensure setAuth is correctly retrieved from context
+  const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [message, setMessage] = useState(""); // State for success message
+  const [message, setMessage] = useState("");
 
   const login = async (userInfo) => {
     const url = "https://backend-aid-b83f0dba9cf5.herokuapp.com/login";
@@ -35,7 +35,7 @@ const Login = ({ setShow }) => {
         const { user_id } = responseData.data;
 
         // Save user data and token in local storage
-        localStorage.setItem("token", response.headers.get("Authorization")); // Ensure Authorization header is set if used
+        localStorage.setItem("token", response.headers.get("Authorization"));
         localStorage.setItem("user", JSON.stringify(responseData.data));
         localStorage.setItem("user_id", user_id);
 
@@ -69,11 +69,6 @@ const Login = ({ setShow }) => {
     };
     await login(userInfo);
     formRef.current.reset();
-  };
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    setShow(false);
   };
 
   return (
@@ -110,7 +105,7 @@ const Login = ({ setShow }) => {
           </form>
           <br />
           {message && <div className="alert alert-info">{message}</div>} {/* Display success message */}
-          <div>Not registered yet? <a href="#signup" onClick={handleClick}>Signup</a></div>
+          <div>Not registered yet? <a href="/signup">Signup</a></div> {/* Simple link to signup page */}
         </div>
       </div>
     </div>
