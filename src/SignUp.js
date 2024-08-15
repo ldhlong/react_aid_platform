@@ -33,7 +33,7 @@ const RegistrationForm = () => {
     const form = new FormData();
     Object.keys(formData).forEach(key => form.append(`user[${key}]`, formData[key]));
 
-    fetch('https://backend-aid-b83f0dba9cf5.herokuapp.com/signup', { // Updated to use localhost
+    fetch('https://backend-aid-b83f0dba9cf5.herokuapp.com/signup', { // Update URL as needed
       method: 'POST',
       body: form,
       headers: {
@@ -42,13 +42,13 @@ const RegistrationForm = () => {
     })
       .then(response => response.json())
       .then(data => {
-        if (data.success) {
+        if (data.status && data.status.code === 200) {
           setMessage("Successfully registered!");
           setTimeout(() => {
             setMessage(""); // Clear message after 3 seconds
           }, 3000);
         } else {
-          setMessage("An error occurred while signing up. Please try again.");
+          setMessage(data.status.message || "An error occurred while signing up. Please try again.");
         }
       })
       .catch(error => {
