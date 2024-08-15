@@ -11,6 +11,8 @@ const RegistrationForm = () => {
     photo: null
   });
 
+  const [message, setMessage] = useState('');
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -31,7 +33,7 @@ const RegistrationForm = () => {
     const form = new FormData();
     Object.keys(formData).forEach(key => form.append(`user[${key}]`, formData[key]));
 
-    fetch('https://backend-aid-b83f0dba9cf5.herokuapp.com/signup', {
+    fetch('http://localhost:4000/signup', { // Updated to use localhost
       method: 'POST',
       body: form,
       headers: {
@@ -40,10 +42,21 @@ const RegistrationForm = () => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('User created', data);
+        if (data.success) {
+          setMessage("Successfully registered!");
+        } else {
+          setMessage("An error occurred while signing up. Please try again.");
+        }
+        setTimeout(() => {
+          setMessage(""); // Clear message after 3 seconds
+        }, 3000);
       })
       .catch(error => {
+        setMessage("An error occurred while signing up. Please try again.");
         console.error('There was an error creating the user!', error);
+        setTimeout(() => {
+          setMessage(""); // Clear message after 3 seconds
+        }, 3000);
       });
   };
 
@@ -54,6 +67,11 @@ const RegistrationForm = () => {
           <h2>Sign-up</h2>
         </div>
         <div className="card-body">
+          {message && (
+            <div className="alert alert-info text-center">
+              {message}
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="first_name">First Name:</label>
