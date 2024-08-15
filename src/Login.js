@@ -50,6 +50,7 @@ const Login = () => { // Removed setShow prop
         setTimeout(() => {
           setMessage(""); // Clear message after 3 seconds
         }, 3000); // Adjust delay as needed
+        window.location.href = '/';
       } else {
         setMessage("An error occurred while logging in. Please try again.");
       }
